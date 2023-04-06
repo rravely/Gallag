@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class EnemyControl : MonoBehaviour
 {
+    [SerializeField] private PlayerControl player;
     [SerializeField] private Stage_Data stagedata;
-    private Rigidbody2D Enemy_Rigidbody;
+    private Animator animator;
     private float destroyWeight = 2.0f; //화면 밖에 나가서 사라지도록 여유 공간 두기
-    
-    void Start()
-    {
-        Enemy_Rigidbody = transform.GetComponent<Rigidbody2D>();
-    }
 
-    void Update()
+    private void Awake()
     {
-        Enemy_Rigidbody.velocity = Vector2.zero;
+        //player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
+        //null 값이 들어가면 메모리를 잡아먹고 GC가 수집해감 
+        //TryGetComponent -> bool 반환
+        GameObject.FindGameObjectWithTag("Player").TryGetComponent(out player); //위 방법보다 약 20퍼센트 빠르다 ~
+        animator = transform.GetComponent<Animator>();
     }
 
     private void LateUpdate()
@@ -23,14 +23,18 @@ public class EnemyControl : MonoBehaviour
         if (transform.position.y < stagedata.LimitMin.y - destroyWeight || transform.position.y > stagedata.LimitMax.y + destroyWeight
         || transform.position.x < stagedata.LimitMin.y - destroyWeight || transform.position.x > stagedata.LimitMax.x + destroyWeight)
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 
     void Die()
     {
+        animator.SetTrigger("Enemy_Die");
         //적 사망하면 사라짐
-        Destroy(gameObject);
+        //Destroy(gameObject);
+        gameObject.SetActive(false);
+        
     }
 
     void OnTriggerEnter2D(Collider2D collider)
@@ -39,5 +43,11 @@ public class EnemyControl : MonoBehaviour
         {
             Die();
         }
+        else if (collider.CompareTag("Player"))
+        {
+            player.TakeDamage(1f);
+            Die();
+        }
     }
+
 }

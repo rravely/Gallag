@@ -15,4 +15,12 @@ public class BulletControl : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.tag == "Enemy") //충돌한 상대의 태그가 "Bullet"이면
+        {
+            Destroy(gameObject);
+        }
+    }
 }

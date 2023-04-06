@@ -1,17 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerControl : MonoBehaviour
 {
+    private float MaxHP = 3f;
+    private float currentHP;
+
+    public float MAXHP => MaxHP;
+    public float CurrentHP => currentHP;
+
+    private bool isDead = false;
+
     private Movement2D movement2D;
+    private Rigidbody2D rigidbody;
     [SerializeField] private Stage_Data stagedata;
     [SerializeField] private Weapon weapon;
+
+    private SpriteRenderer spriteRenderer;
 
     void Awake()
     {
         movement2D = transform.GetComponent<Movement2D>();
         weapon = transform.GetComponent<Weapon>();
+        currentHP = MaxHP; //HP 초기화
+        TryGetComponent(out spriteRenderer);
     }
 
     // Start is called before the first frame update
@@ -56,8 +70,32 @@ public class PlayerControl : MonoBehaviour
     }
 
     //플레이어 죽으면 게임 끝내기
-    void Die()
+    void OnDie()
     {
-        
+        //플레이어 사망 메서드
+        Destroy(gameObject);
+        SceneManager.LoadScene("GameOver");
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHP -= damage;
+        Debug.Log("player HP: " + currentHP);
+
+        StopCoroutine("hitColorAnimation");
+        StartCoroutine("hitColorAnimation");
+
+        if (currentHP <= 0)
+        {
+            Debug.Log("player die");
+            OnDie();
+        }
+    }
+
+    private IEnumerator hitColorAnimation()
+    {
+        spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        spriteRenderer.color = Color.white;
     }
 }
