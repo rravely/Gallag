@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Enemys : MonoBehaviour
 {
+    /*
     [SerializeField]private GameObject EnemyPrefabs;
     [SerializeField]private Stage_Data stagedata;
     [SerializeField]private float CreateRate = 3f; //생성 빈도
 
-
+    
     void Awake()
     {
         //Coroutin을 사용하겠다고 명시
@@ -29,4 +30,5 @@ public class Enemys : MonoBehaviour
             yield return wfs; 
         }
     }
+    */
 }

@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PlayerControl : MonoBehaviour
 {
-    private float MaxHP = 3f;
+    private float MaxHP = 10f;
     private float currentHP;
 
     public float MAXHP => MaxHP;
@@ -20,12 +21,17 @@ public class PlayerControl : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
 
+    //player score 관련
+    [SerializeField] private PlayerScore score;
+    
+
     void Awake()
     {
         movement2D = transform.GetComponent<Movement2D>();
         weapon = transform.GetComponent<Weapon>();
         currentHP = MaxHP; //HP 초기화
         TryGetComponent(out spriteRenderer);
+        TryGetComponent(out score);
     }
 
     // Start is called before the first frame update
@@ -55,7 +61,6 @@ public class PlayerControl : MonoBehaviour
         {
             weapon.StopFire();
         }
-        
     }
 
     //Update를 이걸로 보정
@@ -74,21 +79,30 @@ public class PlayerControl : MonoBehaviour
     {
         //플레이어 사망 메서드
         Destroy(gameObject);
-        SceneManager.LoadScene("GameOver");
+        score.SaveScore(); //점수 저장
+        SceneManager.LoadScene("GameOver"); // 플레이어 사망 씬
     }
 
     public void TakeDamage(float damage)
     {
         currentHP -= damage;
-        Debug.Log("player HP: " + currentHP);
+        //Debug.Log("player HP: " + currentHP);
 
         StopCoroutine("hitColorAnimation");
         StartCoroutine("hitColorAnimation");
 
         if (currentHP <= 0)
         {
-            Debug.Log("player die");
+            //Debug.Log("player die");
             OnDie();
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.CompareTag("EnemyBullet")) //충돌한 상대의 태그가 "Bullet"이면
+        {
+            TakeDamage(1);
         }
     }
 

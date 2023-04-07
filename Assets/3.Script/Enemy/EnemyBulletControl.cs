@@ -2,16 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletControl : MonoBehaviour
+public class EnemyBulletControl : MonoBehaviour
 {
     [SerializeField] private Stage_Data stagedata;
     private float destroyWeight = 2.0f; //화면 밖에 나가서 사라지도록 여유 공간 두기
-    [SerializeField] private PlayerScore playerScore;
-
-    void Awake()
-    {
-        GameObject.FindGameObjectWithTag("Player").TryGetComponent(out playerScore);
-    }
 
     private void LateUpdate()
     {
@@ -24,7 +18,7 @@ public class BulletControl : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.tag == "Enemy") //충돌한 상대의 태그가 "Bullet"이면
+        if (collider.tag == "Player") //충돌한 상대의 태그가 "Bullet"이면
         {
             Destroy(gameObject);
         }

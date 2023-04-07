@@ -15,8 +15,9 @@ GameObject:
   - component: {fileID: 1284250768378012019}
   - component: {fileID: 4985431525230353253}
   - component: {fileID: -1676520493908659466}
+  - component: {fileID: -8363355486007943385}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Enemy01
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,7 +153,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef18c436994a240bea009494c20a0e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   stagedata: {fileID: 11400000, guid: 606bec58b0c94474f9220ef52b9f2b30, type: 2}
+  weapon: {fileID: 0}
+  MaxHP: 2
+  spriteRenderer: {fileID: 0}
+  playerScore: {fileID: 0}
+  enemyScore: 3
 --- !u!50 &-1676520493908659466
 Rigidbody2D:
   serializedVersion: 4
@@ -174,3 +181,17 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-8363355486007943385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1284250768378012024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea971ae09d4c44f698324552951cbbe4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerBullet: {fileID: 4953707461021468824, guid: be5ba4ff2f7a24b45b5b42aa8d41dc10, type: 3}
+  AttackRate: 0.5
